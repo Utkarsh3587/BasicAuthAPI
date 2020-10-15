@@ -14,7 +14,6 @@ class UserLoginAPIView(generics.CreateAPIView):
     serializer_class = UserLoginSerializer
 
     def post(self, request, *args, **kwargs):
-        print(request.data)
         serializer = UserLoginSerializer(data=request.data)
         
         if serializer.is_valid(raise_exception=True):
