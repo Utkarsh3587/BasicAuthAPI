@@ -8,8 +8,8 @@ class UserCreateSerializer(serializers.ModelSerializer):
     email = serializers.EmailField(max_length=255, required=True)
     password = serializers.CharField(max_length=255, required=True, write_only=True)
 
-    def create(self, validated_data):
-        user = User.objects.create_user(validated_data['email'], validated_data['password'])
+    def create(self, data):
+        user = User.objects.create_user(data['email'], data['password'])
         return user
 
     class Meta:
@@ -25,8 +25,8 @@ class UserLoginSerializer(serializers.ModelSerializer):
         model = User
         fields = ['id', 'email', 'password']
 
-    def validate(self, attrs, ):
-        user = authenticate(email=attrs['email'], password=attrs['password'])
+    def validate(self, data):
+        user = authenticate(email=data['email'], password=data['password'])
         
         if user is None:
             raise serializers.ValidationError('invalid credentials provided')
