@@ -8,7 +8,6 @@ from crop.models import Crop
 class CropAPIView(generics.ListCreateAPIView):
     serializer_class = CropSerializer
 
-
     def get(self, request, *args, **kwargs):
         search = request.GET.get('search', None)
         if search:
@@ -17,3 +16,12 @@ class CropAPIView(generics.ListCreateAPIView):
             crops = Crop.objects.all()[:10]
     
         return Response(CropSerializer(crops, many=True).data)
+
+
+class CropDetailAPIView(generics.RetrieveAPIView):
+    serializer_class = CropSerializer
+
+    def get(self, request, *args, **kwargs):
+        print("hello world", kwargs.get('pk', None))
+        crop = Crop.objects.filter(id=kwargs.get('pk', None)).last()
+        return Response(CropSerializer(crop).data)
