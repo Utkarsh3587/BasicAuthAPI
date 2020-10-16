@@ -10,6 +10,10 @@ class CropAPIView(generics.ListCreateAPIView):
 
 
     def get(self, request, *args, **kwargs):
-        crops = Crop.objects.all()[:10]
+        search = request.GET.get('search', None)
+        if search:
+            crops = Crop.objects.filter(title__icontains=search.strip())[:10]
+        else:
+            crops = Crop.objects.all()[:10]
     
         return Response(CropSerializer(crops, many=True).data)
